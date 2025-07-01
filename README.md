@@ -1,6 +1,6 @@
 # WordPress.com Reader Connections
 
-A matching tool for WordPress.com that helps creators discover and collaborate with other bloggers who share similar interests and locations.
+A new view for the WordPress.com Reader that helps creators discover and engage with other bloggers who share similar interests and locations.
 
 ## Screenshots
 
