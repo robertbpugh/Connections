@@ -13,7 +13,7 @@ A matching tool for WordPress.com that helps creators discover and collaborate w
 *Topic-based filtering - easily find creators by content type and size*
 
 ### Mobile Responsive Design
-![Mobile Responsive](screenshots/mobile-responsive.png)
+<img src="screenshots/mobile-responsive.png" alt="Mobile Responsive" width="400">
 *Fully responsive design that works great on phones and tablets*
 
 ### Trending Creators
