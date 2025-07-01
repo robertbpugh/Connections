@@ -1,0 +1,404 @@
+/**
+ * WordPress.com Reader Connections Styles
+ * 
+ * Responsive styles for the creator matching interface
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f6f7f7;
+    color: #2c3338;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background: white;
+    border-right: 1px solid #e0e5eb;
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #e0e5eb;
+}
+
+.sidebar-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.sidebar-subtitle {
+    color: #646970;
+    font-size: 14px;
+}
+
+.sidebar-nav {
+    padding: 20px 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #2c3338;
+    font-size: 14px;
+    border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+    background-color: #f6f7f7;
+}
+
+.nav-item.active {
+    background-color: #e8f4fd;
+    border-left-color: #3858e9;
+    color: #3858e9;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    display: inline-block;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background: white;
+    overflow-y: auto;
+}
+
+.content-header {
+    padding: 40px 40px 20px;
+    border-bottom: 1px solid #e0e5eb;
+}
+
+.content-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.content-subtitle {
+    color: #646970;
+    font-size: 16px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    padding: 0 40px;
+    border-bottom: 1px solid #e0e5eb;
+}
+
+.tab {
+    padding: 16px 0;
+    margin-right: 32px;
+    text-decoration: none;
+    color: #646970;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+
+.tab.active {
+    color: #2c3338;
+    border-bottom-color: #3858e9;
+}
+
+/* Filters */
+.filters {
+    padding: 20px 40px;
+    border-bottom: 1px solid #e0e5eb;
+    display: flex;
+    gap: 16px;
+}
+
+.filters select {
+    padding: 8px 12px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    width: 140px;
+}
+
+/* Mobile Header */
+.mobile-header {
+    display: none;
+    background: white;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e0e5eb;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mobile-menu-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.mobile-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Connections List */
+.connections-list {
+    padding: 20px 40px;
+}
+
+.connection-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.connection-item:last-child {
+    border-bottom: none;
+}
+
+.connection-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 16px;
+    background-color: #e0e5eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.connection-info {
+    flex: 1;
+}
+
+.connection-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.connection-details {
+    color: #646970;
+    font-size: 14px;
+}
+
+.connection-details a {
+    color: #646970;
+    text-decoration: none;
+}
+
+.connection-details a:hover {
+    text-decoration: underline;
+}
+
+.connection-topics {
+    color: #646970;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.match-reason {
+    color: #646970;
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.connection-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    border: 1px solid #c3c4c7;
+    background: white;
+    color: #2c3338;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    border-color: #8c8f94;
+}
+
+.btn-primary {
+    background: #3858e9;
+    color: white;
+    border: 1px solid #3858e9;
+}
+
+.btn-primary:hover {
+    background: #2145e6;
+    border-color: #2145e6;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 40px;
+    color: #646970;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .mobile-header {
+        display: flex;
+    }
+    
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+    }
+    
+    .main-content {
+        margin-top: 0;
+    }
+    
+    .content-header {
+        padding: 20px 20px 16px;
+    }
+    
+    .content-title {
+        font-size: 24px;
+    }
+    
+    .content-subtitle {
+        font-size: 14px;
+    }
+    
+    .tabs {
+        padding: 0 20px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab {
+        white-space: nowrap;
+        margin-right: 24px;
+    }
+    
+    .filters {
+        padding: 16px 20px;
+        flex-direction: row;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .filters select {
+        width: 140px;
+    }
+    
+    .connections-list {
+        padding: 16px 20px;
+    }
+    
+    .connection-item {
+        padding: 16px 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .connection-avatar {
+        margin-bottom: 12px;
+        margin-right: 0;
+    }
+    
+    .connection-info {
+        margin-bottom: 12px;
+    }
+    
+    .connection-actions {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .btn {
+        width: 110px;
+        margin: 0;
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Tablet Styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .content-header {
+        padding: 32px 32px 16px;
+    }
+    
+    .tabs {
+        padding: 0 32px;
+    }
+    
+    .filters {
+        padding: 16px 32px;
+    }
+    
+    .connections-list {
+        padding: 16px 32px;
+    }
+}

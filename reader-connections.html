@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordPress.com Reader - Connections</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f6f7f7;
+            color: #2c3338;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e0e5eb;
+            padding: 20px 0;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #e0e5eb;
+        }
+        
+        .sidebar-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-subtitle {
+            color: #646970;
+            font-size: 14px;
+        }
+        
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #2c3338;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background-color: #f6f7f7;
+        }
+        
+        .nav-item.active {
+            background-color: #e8f4fd;
+            border-left-color: #3858e9;
+            color: #3858e9;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            display: inline-block;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: white;
+            overflow-y: auto;
+        }
+        
+        .content-header {
+            padding: 40px 40px 20px;
+            border-bottom: 1px solid #e0e5eb;
+        }
+        
+        .content-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .content-subtitle {
+            color: #646970;
+            font-size: 16px;
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 40px;
+            border-bottom: 1px solid #e0e5eb;
+        }
+        
+        .tab {
+            padding: 16px 0;
+            margin-right: 32px;
+            text-decoration: none;
+            color: #646970;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            color: #2c3338;
+            border-bottom-color: #3858e9;
+        }
+        
+        .filters {
+            padding: 20px 40px;
+            border-bottom: 1px solid #e0e5eb;
+            display: flex;
+            gap: 16px;
+        }
+        
+        .filters select {
+            padding: 8px 12px;
+            border: 1px solid #c3c4c7;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            width: 140px;
+        }
+        
+        .mobile-header {
+            display: none;
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e5eb;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-menu-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .mobile-header {
+                display: flex;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+            }
+            
+            .main-content {
+                margin-top: 0;
+            }
+            
+            .content-header {
+                padding: 20px 20px 16px;
+            }
+            
+            .content-title {
+                font-size: 24px;
+            }
+            
+            .content-subtitle {
+                font-size: 14px;
+            }
+            
+            .tabs {
+                padding: 0 20px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                margin-right: 24px;
+            }
+            
+            .filters {
+                padding: 16px 20px;
+                flex-direction: row;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            
+            .filters select {
+                width: 140px;
+            }
+            
+            .connections-list {
+                padding: 16px 20px;
+            }
+            
+            .connection-item {
+                padding: 16px 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .connection-avatar {
+                margin-bottom: 12px;
+                margin-right: 0;
+            }
+            
+            .connection-info {
+                margin-bottom: 12px;
+            }
+            
+            .connection-actions {
+                width: 100%;
+                justify-content: center;
+                gap: 12px;
+            }
+            
+            .btn {
+                width: 110px;
+                margin: 0;
+                text-align: center;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Tablet Styles */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .content-header {
+                padding: 32px 32px 16px;
+            }
+            
+            .tabs {
+                padding: 0 32px;
+            }
+            
+            .filters {
+                padding: 16px 32px;
+            }
+            
+            .connections-list {
+                padding: 16px 32px;
+            }
+        }
+        
+        .connections-list {
+            padding: 20px 40px;
+        }
+        
+        .connection-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .connection-item:last-child {
+            border-bottom: none;
+        }
+        
+        .connection-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 16px;
+            background-color: #e0e5eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .connection-info {
+            flex: 1;
+        }
+        
+        .connection-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .connection-details {
+            color: #646970;
+            font-size: 14px;
+        }
+        
+        .connection-details a {
+            color: #646970;
+            text-decoration: none;
+        }
+        
+        .connection-details a:hover {
+            text-decoration: underline;
+        }
+        
+        .connection-topics {
+            color: #646970;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .match-reason {
+            color: #646970;
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        
+        .connection-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #c3c4c7;
+            background: white;
+            color: #2c3338;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            border-color: #8c8f94;
+        }
+        
+        .btn-primary {
+            background: #3858e9;
+            color: white;
+            border: 1px solid #3858e9;
+        }
+        
+        .btn-primary:hover {
+            background: #2145e6;
+            border-color: #2145e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <div class="mobile-title">Connections</div>
+        <div></div>
+    </div>
+    
+    <div class="sidebar-overlay" onclick="closeMobileMenu()"></div>
+    
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Reader</div>
+                <div class="sidebar-subtitle">Keep up with your interests.</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"/>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                    </svg>
+                    Recent
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="8"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                    Discover
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    Likes
+                </a>
+                <a href="#" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Connections
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Conversations
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"/>
+                        <line x1="8" y1="12" x2="21" y2="12"/>
+                        <line x1="8" y1="18" x2="21" y2="18"/>
+                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                    </svg>
+                    Lists
+                </a>
+            </nav>
+        </div>
+        
+        <div class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">Connections</h1>
+                <p class="content-subtitle">Discover creators you might want to collaborate with. Like or comment on their blog to get started.</p>
+            </div>
+            
+            <div class="tabs">
+                <a href="#" class="tab active" onclick="switchTab('suggested')">Suggested</a>
+                <a href="#" class="tab" onclick="switchTab('trending')">Trending</a>
+                <a href="#" class="tab" onclick="switchTab('local')">Local</a>
+            </div>
+            
+            <div class="filters">
+                <select id="topicFilter" onchange="applyFilters()">
+                    <option value="">All Topics</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Wellness">Wellness</option>
+                </select>
+                <select id="sizeFilter" onchange="applyFilters()">
+                    <option value="">All Sizes</option>
+                    <option value="small">Small (< 2k followers)</option>
+                    <option value="medium">Medium (2k - 5k followers)</option>
+                    <option value="large">Large (> 5k followers)</option>
+                </select>
+            </div>
+            
+            <div class="connections-list" id="connectionsList">
+                <!-- Connections will be loaded by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample creator data - in real app this would come from WordPress.com API
+        const creators = [
+            {
+                name: "Sarah's Kitchen Adventures",
+                url: "foodblog.wordpress.com",
+                username: "sarahskitchen",
+                followers: 2300,
+                topics: ["Food", "Recipes", "Healthy Cooking"],
+                language: "English",
+                engagementScore: 85, // High engagement - likes/comments frequently
+                avatar: { color: "#ff6b6b", initials: "SK" }
+            },
+            {
+                name: "Digital Nomad Diaries", 
+                url: "nomadlife.wordpress.com",
+                username: "digitalnomaddiaries",
+                followers: 1800,
+                topics: ["Travel", "Remote Work", "Photography"],
+                language: "English", 
+                engagementScore: 92,
+                avatar: { color: "#4ecdc4", initials: "DN" }
+            },
+            {
+                name: "Code & Coffee",
+                url: "devblog.wordpress.com", 
+                username: "codecoffee",
+                followers: 4100,
+                topics: ["JavaScript", "Web Development", "Tutorials"],
+                language: "English",
+                engagementScore: 78,
+                avatar: { color: "#45b7d1", initials: "CC" }
+            },
+            {
+                name: "Le Chef Parisien",
+                url: "cuisineparis.wordpress.com",
+                username: "lechefparisien",
+                followers: 3200, 
+                topics: ["Food", "French Cuisine", "Wine"],
+                language: "French",
+                engagementScore: 67,
+                avatar: { color: "#f9ca24", initials: "CP" }
+            },
+            {
+                name: "Mindful Moments",
+                url: "mindfulness.wordpress.com",
+                username: "mindfulmoments",
+                followers: 1500,
+                topics: ["Wellness", "Meditation", "Mental Health"],
+                language: "English",
+                engagementScore: 95,
+                avatar: { color: "#6c5ce7", initials: "MM" }
+            },
+            {
+                name: "Tokyo Street Food",
+                url: "tokyoeats.wordpress.com", 
+                username: "tokyostreetfood",
+                followers: 2800,
+                topics: ["Food", "Japanese Cuisine", "Street Food"],
+                language: "English",
+                engagementScore: 88,
+                avatar: { color: "#fd79a8", initials: "TS" }
+            },
+            {
+                name: "Backpack Europe",
+                url: "europetravel.wordpress.com",
+                username: "backpackeurope",
+                followers: 2100,
+                topics: ["Travel", "Budget Travel", "Europe"],
+                language: "English", 
+                engagementScore: 71,
+                avatar: { color: "#00b894", initials: "BE" }
+            },
+            {
+                name: "Python for Beginners",
+                url: "pythonbasics.wordpress.com",
+                username: "pythonforbeginners",
+                followers: 3600,
+                topics: ["Python", "Programming", "Tutorials"], 
+                language: "English",
+                engagementScore: 82,
+                avatar: { color: "#fdcb6e", initials: "PB" }
+            }
+        ];
+
+        // Current user profile (this would come from WordPress.com user data)
+        const currentUser = {
+            topics: ["Food", "Cooking", "Recipes"],
+            language: "English",
+            engagementScore: 75,
+            location: {
+                region: "California",
+                country: "United States"
+            }
+        };
+        
+        // Add trending and location data to creators
+        const locations = [
+            { region: "California", country: "United States" },
+            { region: "New York", country: "United States" },
+            { region: "Texas", country: "United States" },
+            { region: "Ontario", country: "Canada" },
+            { region: "British Columbia", country: "Canada" },
+            { region: "London", country: "United Kingdom" },
+            { region: "Scotland", country: "United Kingdom" },
+            { region: "New South Wales", country: "Australia" },
+            { region: "Victoria", country: "Australia" },
+            { region: "Bavaria", country: "Germany" },
+            { region: "Berlin", country: "Germany" },
+            { region: "Tokyo", country: "Japan" },
+            { region: "São Paulo", country: "Brazil" },
+            { region: "Mumbai", country: "India" },
+            { region: "Île-de-France", country: "France" }
+        ];
+        
+        creators.forEach((creator, index) => {
+            // For demo purposes, ensure we have enough trending and local creators
+            if (index < 5) {
+                creator.trending = true; // First 5 are trending for demo
+            } else {
+                creator.trending = Math.random() > 0.85; // Rest follow 15% rule
+            }
+            creator.growthRate = Math.floor(Math.random() * 40) + 15; // 15-55% growth
+            
+            // For demo, ensure some creators are in user's location
+            if (index < 3) {
+                creator.location = { region: "California", country: "United States" }; // Same region
+            } else if (index < 5) {
+                creator.location = { region: "New York", country: "United States" }; // Same country
+            } else {
+                creator.location = locations[Math.floor(Math.random() * locations.length)];
+            }
+        });
+        
+        let currentTab = 'suggested';
+
+        // Matching algorithm
+        function findMatches(user, allCreators) {
+            return allCreators
+                .map(creator => {
+                    let score = 0;
+                    
+                    // Topic similarity (most important factor)
+                    const commonTopics = user.topics.filter(topic => 
+                        creator.topics.some(creatorTopic => 
+                            creatorTopic.toLowerCase().includes(topic.toLowerCase()) ||
+                            topic.toLowerCase().includes(creatorTopic.toLowerCase())
+                        )
+                    );
+                    score += commonTopics.length * 40;
+                    
+                    // Language match (essential)
+                    if (creator.language === user.language) {
+                        score += 30;
+                    }
+                    
+                    // Engagement compatibility (active users match with active users)
+                    const engagementDiff = Math.abs(creator.engagementScore - user.engagementScore);
+                    score += Math.max(0, 20 - engagementDiff * 0.5);
+                    
+                    // Slight bonus for mid-size creators (easier to collaborate with)
+                    if (creator.followers >= 1000 && creator.followers <= 5000) {
+                        score += 10;
+                    }
+                    
+                    return {
+                        ...creator,
+                        matchScore: Math.round(score),
+                        commonTopics: commonTopics
+                    };
+                })
+                .filter(creator => creator.matchScore > 30) // Only show good matches
+                .sort((a, b) => b.matchScore - a.matchScore) // Best matches first
+                .slice(0, 5); // Top 5 matches
+        }
+
+        // Format numbers nicely
+        function formatFollowers(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'k';
+            }
+            return num.toString();
+        }
+
+        // Get creators for current tab
+        function getCreatorsForTab(tab) {
+            switch(tab) {
+                case 'trending':
+                    return creators
+                        .filter(c => c.trending)
+                        .sort((a, b) => b.growthRate - a.growthRate)
+                        .slice(0, 5);
+                case 'local':
+                    // First try to find creators in same region, then same country
+                    const sameRegion = creators.filter(c => 
+                        c.location.region === currentUser.location.region && 
+                        c.location.country === currentUser.location.country
+                    );
+                    const sameCountry = creators.filter(c => 
+                        c.location.country === currentUser.location.country &&
+                        c.location.region !== currentUser.location.region
+                    );
+                    
+                    const localCreators = [...sameRegion, ...sameCountry]
+                        .sort((a, b) => b.followers - a.followers)
+                        .slice(0, 5);
+                        
+                    return localCreators;
+                case 'suggested':
+                default:
+                    return findMatches(currentUser, creators);
+            }
+        }
+        
+        // Apply filters
+        function applyFilters() {
+            const topicFilter = document.getElementById('topicFilter').value;
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            
+            let filteredCreators = creators;
+            
+            if (topicFilter) {
+                filteredCreators = filteredCreators.filter(c => 
+                    c.topics.some(topic => topic.includes(topicFilter))
+                );
+            }
+            
+            if (sizeFilter) {
+                filteredCreators = filteredCreators.filter(c => {
+                    if (sizeFilter === 'small') return c.followers < 2000;
+                    if (sizeFilter === 'medium') return c.followers >= 2000 && c.followers <= 5000;
+                    if (sizeFilter === 'large') return c.followers > 5000;
+                    return true;
+                });
+            }
+            
+            renderConnections(filteredCreators);
+        }
+        
+        // Switch tabs
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Reset filters
+            document.getElementById('topicFilter').value = '';
+            document.getElementById('sizeFilter').value = '';
+            
+            renderConnections();
+        }
+        
+        // Render connections list
+        function renderConnections(customCreators = null) {
+            const creatorsToShow = customCreators || getCreatorsForTab(currentTab);
+            const container = document.getElementById('connectionsList');
+            
+            const getMatchReason = (creator) => {
+                if (currentTab === 'trending') {
+                    return `Trending: ${creator.growthRate}% growth this month`;
+                } else if (currentTab === 'local') {
+                    const isRegionMatch = creator.location.region === currentUser.location.region;
+                    return isRegionMatch ? 
+                        `Local: ${creator.location.region}` : 
+                        `Local: ${creator.location.region}, ${creator.location.country}`;
+                } else {
+                    return `Match: ${creator.commonTopics?.length > 0 ? creator.commonTopics.join(', ') : creator.topics.slice(0, 2).join(', ')}`;
+                }
+            };
+            
+            container.innerHTML = creatorsToShow.map(creator => `
+                <div class="connection-item">
+                    <div class="connection-avatar" style="background-color: ${creator.avatar.color}">
+                        ${creator.avatar.initials}
+                    </div>
+                    <div class="connection-info">
+                        <div class="connection-name">${creator.name}</div>
+                        <div class="connection-details"><a href="https://${creator.url}" target="_blank">${creator.url}</a> • ${formatFollowers(creator.followers)} followers</div>
+                        <div class="connection-topics">${creator.topics.join(' • ')}</div>
+                        <div class="match-reason">${getMatchReason(creator)}</div>
+                    </div>
+                    <div class="connection-actions">
+                        <button class="btn" onclick="viewProfile('${creator.username}')">View profile</button>
+                        <button class="btn btn-primary" onclick="connect('${creator.url}')">View blog</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Button actions
+        function viewProfile(username) {
+            alert(`Would open: https://wordpress.com/reader/users/${username}`);
+        }
+
+        function connect(url) {
+            alert(`Would open: https://${url}`);
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        // Close mobile menu when window is resized to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileMenu();
+            }
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure we start with suggested tab data
+            currentTab = 'suggested';
+            renderConnections();
+        });
+    </script>
+</body>
+</html>
