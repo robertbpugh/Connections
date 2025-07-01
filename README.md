@@ -1,32 +1,32 @@
 # WordPress.com Reader Connections
 
-A matching tool for WordPress.com that helps creators discover and collaborate with other bloggers who share similar interests and engagement patterns.
+A matching tool for WordPress.com that helps creators discover and collaborate with other bloggers who share similar interests and locations.
 
 ## Screenshots
 
 ### Desktop Interface
 ![Desktop Overview](screenshots/desktop-overview.png)
-*The main Connections interface showing smart creator matching based on topics and engagement*
+*The main Connections interface showing smart creator matching based on topics*
 
 ### Smart Filtering
 ![Filters Demo](screenshots/filters-demo.png)
-*Topic-based filtering - easily find creators by content type*
+*Topic-based filtering - easily find creators by content type and size*
 
 ### Mobile Responsive Design
 ![Mobile Responsive](screenshots/mobile-responsive.png)
 *Fully responsive design that works great on phones and tablets*
 
-### Local Discovery
-![Local Tab](screenshots/local-tab.png)
-*Discover creators in your region or country for local collaborations*
-
 ### Trending Creators
 ![Trending Tab](screenshots/trending-tab.png)
 *Find fast-growing creators gaining momentum in the community*
 
+### Local Discovery
+![Local Tab](screenshots/local-tab.png)
+*Discover creators in your region or country for local collaborations*
+
 ## Overview
 
-The Connections feature adds a new tab to the WordPress.com Reader that intelligently suggests creators for potential collaboration. Users can discover trending creators, find local bloggers, and connect with others who share similar topics and engagement levels.
+The Connections feature adds a new tab to the WordPress.com Reader that intelligently suggests creators to connect with. People can discover trending creators, find local bloggers, and connect with others who share similar topics and engagement levels.
 
 ## Features
 
